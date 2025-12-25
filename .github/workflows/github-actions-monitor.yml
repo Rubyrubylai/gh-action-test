@@ -1,0 +1,45 @@
+name: Monitor Testing Workflow
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: "Build and Test Phase"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Step 1: Initializing"
+        run: |
+          echo "Starting initialization..."
+          sleep 10
+
+      - name: "Step 2: Slow Build Process"
+        run: |
+          echo "This step takes 2 minutes..."
+          sleep 120
+
+      - name: "Step 3: Running Tests"
+        run: |
+          echo "Testing in progress..."
+          sleep 60
+
+  deploy-production:
+    name: "Deployment Phase"
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Step 1: Preparing Deployment"
+        run: sleep 30
+
+      - name: "Step 2: Database Migration"
+        run: |
+          echo "Simulating a 2-minute migration..."
+          sleep 120
+
+      - name: "Step 3: Final Check (Failing intentionally)"
+        run: |
+          echo "Checking health... oh no!"
+          sleep 20
+          exit 1 # 模擬失敗，讓你可以觀察監控工具如何回報 FAILED
